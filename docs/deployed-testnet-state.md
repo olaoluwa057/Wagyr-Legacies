@@ -25,6 +25,9 @@ These are public addresses only. Do not infer production role policy from this t
 - Claim fee: `0` wei
 - Royalty fee numerator: `250` basis points
 
+This deployment is configured for free NFT claiming. Users still pay network
+gas, but the contract claim fee is zero.
+
 ## Minted Test Tokens
 
 | Token ID | Tier | Owner | Token URI | Transaction |
@@ -56,6 +59,7 @@ These are public addresses only. Do not infer production role policy from this t
 ## Notes
 
 - BaseScan testnet NFT image rendering may lag or show a placeholder even when the contract, metadata, and image URL are valid.
+- Free minting is supported by keeping `claimFee = 0`; callers should still
+  read `claimFee()` and send exactly that value.
 - Production metadata should keep `ipfs://` URIs unless a marketplace integration explicitly requires HTTPS gateway URLs.
 - This testnet deployment was not contract-verified on BaseScan by request.
-

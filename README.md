@@ -9,7 +9,7 @@ Production-oriented ERC-721 implementation for Wagyr Legacies NFTs.
 - Per-user nonce replay protection
 - Eternal Patron scarcity of 100 slots per player/team
 - Signed per-token `ipfs://` metadata URI storage
-- ETH claim fee splitting between treasury and buyback wallets
+- Optional ETH claim fee splitting between treasury and buyback wallets
 - ERC-2981 royalty signaling
 - Role-based administration and emergency pause
 
@@ -81,7 +81,8 @@ PINATA_GATEWAY=https://gateway.pinata.cloud/ipfs
 1. Backend validates user backing activity off-chain.
 2. Backend creates ERC-721 metadata JSON and pins it to IPFS.
 3. Backend signs the exact `ipfs://...` token metadata URI with EIP-712.
-4. User calls `claim(request, signature)` and pays the exact ETH claim fee.
+4. User calls `claim(request, signature)` and sends the exact configured
+   `claimFee()` value. For free mint deployments, this value is `0`.
 5. Contract verifies the signer, nonce, expiry, tier threshold, metadata URI,
    Eternal Patron slot, and fee before minting.
 
@@ -138,6 +139,17 @@ npm run pin:ipfs -- --file scripts/metadata.example.json --name wagyr-genesis-me
 
 Use the returned metadata `ipfsUri` as the `metadataURI` in the signed mint
 request.
+
+## Free Minting
+
+Wagyr Legacies supports free NFT minting by setting `claimFee` to `0`. No
+contract change is required. Frontends and scripts should still read
+`claimFee()` before submitting a claim and send exactly that value; in free mint
+mode the transaction value is simply `0` wei.
+
+If a non-zero fee is configured later, the same signed claim flow still works.
+The fee is not part of the EIP-712 signed request, so only the transaction value
+changes.
 
 ## Base Sepolia Deployment
 
@@ -236,5 +248,6 @@ npm run claim:mint -- --network base-sepolia --contract $WAGYR_CONTRACT_ADDRESS 
 ```
 
 The mint script reads `claimFee()` from the deployed contract, sends the exact
-fee, waits for confirmation, and prints the transaction hash, token ID,
-`tokenURI`, `legacyData`, and `patronMintCount`.
+value, waits for confirmation, and prints the transaction hash, token ID,
+`tokenURI`, `legacyData`, and `patronMintCount`. When `claimFee()` is `0`, this
+is a free mint transaction with no ETH value attached beyond gas.

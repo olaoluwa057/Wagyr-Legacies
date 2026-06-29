@@ -4,7 +4,7 @@ This document describes how the backend team should integrate with the `WagyrLeg
 
 ## Integration Goal
 
-The backend is responsible for deciding whether a user qualifies for an NFT, creating/pinning metadata, signing a mint authorization, and preventing duplicate business claims. The smart contract verifies the backend signature, enforces tier thresholds, rejects replayed nonces, enforces Eternal Patron slot scarcity, collects the claim fee, and mints the NFT.
+The backend is responsible for deciding whether a user qualifies for an NFT, creating/pinning metadata, signing a mint authorization, and preventing duplicate business claims. The smart contract verifies the backend signature, enforces tier thresholds, rejects replayed nonces, enforces Eternal Patron slot scarcity, checks the exact configured claim fee, and mints the NFT.
 
 ## Contract Context
 
@@ -16,6 +16,7 @@ The backend is responsible for deciding whether a user qualifies for an NFT, cre
 - Token standard: ERC-721
 - Token URI policy: contract stores a signed per-token `ipfs://...` metadata URI
 - Backend signer role: address must have `SIGNER_ROLE` on the contract
+- Current testnet claim fee: `0` wei, so NFT claims are free apart from gas
 
 ## Tier Rules
 
@@ -28,6 +29,23 @@ All `backedAmount` values are unsigned integers with 18 decimals.
 | Eternal Patron | `2` | At least `$1,000` verified backing on one player/team | `playerId != 0`, `backedAmount >= 1000000000000000000000`, `patronSlot = patronMintCount(playerId) + 1`, `patronSlot <= 100` |
 
 Eternal Patron is the only rebate-eligible tier in v1.
+
+## Free Minting Policy
+
+NFT minting can be free by setting the contract `claimFee` to `0`. This is the
+current intended setup for testnet and can also be used for production if the
+team wants all claims to be free.
+
+Important integration details:
+
+- The backend does not include any fee value in the signed `MintRequest`.
+- The frontend should always read `claimFee()` from the contract immediately
+  before submitting a mint transaction.
+- The frontend must pass exactly that value as transaction `value`.
+- When `claimFee()` returns `0`, submit the claim with `value: 0`.
+- No treasury or buyback transfer occurs when the fee is zero.
+- If a fee is enabled later, no backend signature format change is needed; the
+  frontend simply sends the new exact `claimFee()` value.
 
 ## Claim Data Model
 
@@ -267,17 +285,20 @@ Keep production image and metadata URIs as `ipfs://...` by default.
 
 ## Frontend Claim Submission
 
-The frontend receives `{ request, signature }` and calls:
+The frontend receives `{ request, signature }`, reads `claimFee()`, and calls:
 
 ```ts
 claim(request, signature, { value: claimFee })
 ```
 
+For free minting, `claimFee` is `0n` and the call should still use the same
+shape with zero ETH value. The user only pays network gas.
+
 Before submitting, frontend should:
 
 - Check wallet address matches `request.user`.
 - Check `Date.now() / 1000 < request.expiry`.
-- Read `claimFee()` from contract and pass exact value.
+- Read `claimFee()` from contract and pass the exact value, including `0`.
 - Show the user the tier and metadata preview.
 - On success, display the transaction hash and token ID from `LegacyMinted`.
 
@@ -301,7 +322,9 @@ Common contract reverts:
 - `ClaimExpired`: expiry has passed.
 - `NonceAlreadyUsed`: `(user, nonce)` was already claimed.
 - `InvalidMetadataURI`: metadata URI is not `ipfs://...`.
-- `IncorrectClaimFee`: frontend did not send exact `claimFee`.
+- `IncorrectClaimFee`: frontend did not send exact `claimFee`; on a free mint
+  deployment this usually means a non-zero ETH value was sent by mistake, or the
+  frontend used a stale fee value.
 - `InvalidSignature`: signer is not authorized or request was modified.
 - `InvalidBackedAmount`: tier threshold not met.
 - `InvalidPatronSlot`: Eternal Patron slot is stale or invalid.
@@ -348,4 +371,3 @@ npm run claim:mint -- \
   --contract 0xe627F0961D6D80BfB346094Bd400A9dc43e0F67f \
   --claim-file claims/example.json
 ```
-
