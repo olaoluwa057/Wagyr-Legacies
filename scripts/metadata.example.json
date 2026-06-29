@@ -1,0 +1,33 @@
+{
+  "name": "Wagyr Legacies #1",
+  "description": "A Wagyr Legacies NFT earned through verified backing activity.",
+  "image": "ipfs://bafyexampleimagecid/wagyr-legacies-1.png",
+  "external_url": "https://wagyr.example/legacies/1",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Eternal Patron"
+    },
+    {
+      "trait_type": "Player ID",
+      "value": "42"
+    },
+    {
+      "trait_type": "Backed Amount",
+      "value": "1000.00 USD"
+    },
+    {
+      "trait_type": "Patron Slot",
+      "value": "1"
+    },
+    {
+      "trait_type": "Rebate Eligible",
+      "value": "true"
+    },
+    {
+      "trait_type": "Original Claimer",
+      "value": "0x0000000000000000000000000000000000000000"
+    }
+  ]
+}
+

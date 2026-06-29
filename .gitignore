@@ -1,0 +1,14 @@
+node_modules/
+coverage/
+artifacts/
+cache/
+ignition/deployments/
+typechain-types/
+.env
+.env.*
+!.env.example
+claims/*.json
+!claims/.gitkeep
+ignition/parameters/*.json
+!ignition/parameters/*.example.json
+

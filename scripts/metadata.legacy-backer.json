@@ -1,0 +1,29 @@
+{
+  "name": "Wagyr Legacies Legacy Backer #1",
+  "description": "A Legacy Backer NFT earned through at least $100 of verified Wagyr backing activity.",
+  "image": "ipfs://QmdzgEb4NRB28HSsmRMtYFtwVzazNtdCm8ayx9UoTW3ApK",
+  "external_url": "https://wagyr.example/legacies/legacy-backer/1",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Legacy Backer"
+    },
+    {
+      "trait_type": "Player ID",
+      "value": "N/A"
+    },
+    {
+      "trait_type": "Backed Amount",
+      "value": "100.00 USD"
+    },
+    {
+      "trait_type": "Patron Slot",
+      "value": "0"
+    },
+    {
+      "trait_type": "Rebate Eligible",
+      "value": "false"
+    }
+  ]
+}
+

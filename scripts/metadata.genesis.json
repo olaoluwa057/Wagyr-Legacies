@@ -1,0 +1,29 @@
+{
+  "name": "Wagyr Legacies Genesis Believer #1",
+  "description": "A Genesis Believer NFT earned through verified Wagyr backing activity.",
+  "image": "ipfs://QmSf6X7djG82wPc4LWjLtQ5JjyrHCwtNJfqyFekEoziGEF",
+  "external_url": "https://wagyr.example/legacies/genesis/1",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Genesis Believer"
+    },
+    {
+      "trait_type": "Player ID",
+      "value": "N/A"
+    },
+    {
+      "trait_type": "Backed Amount",
+      "value": "Any verified backing amount"
+    },
+    {
+      "trait_type": "Patron Slot",
+      "value": "0"
+    },
+    {
+      "trait_type": "Rebate Eligible",
+      "value": "false"
+    }
+  ]
+}
+

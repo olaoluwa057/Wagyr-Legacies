@@ -1,0 +1,29 @@
+{
+  "name": "Wagyr Legacies Eternal Patron #1",
+  "description": "An Eternal Patron NFT earned through at least $1,000 of verified backing on a single Wagyr player or team.",
+  "image": "ipfs://QmZ83JY2AMk8giTjXXAcrqU4DT9Ljn5Ui4KK4QQVT7wd4T",
+  "external_url": "https://wagyr.example/legacies/eternal-patron/1",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Eternal Patron"
+    },
+    {
+      "trait_type": "Player ID",
+      "value": "42"
+    },
+    {
+      "trait_type": "Backed Amount",
+      "value": "1000.00 USD"
+    },
+    {
+      "trait_type": "Patron Slot",
+      "value": "1"
+    },
+    {
+      "trait_type": "Rebate Eligible",
+      "value": "true"
+    }
+  ]
+}
+

@@ -1,0 +1,29 @@
+{
+  "name": "Wagyr Legacies Actual Image Demo #4",
+  "description": "A Wagyr Legacies test NFT minted on Base Sepolia with live IPFS metadata and a pinned panda image.",
+  "image": "ipfs://QmSf6X7djG82wPc4LWjLtQ5JjyrHCwtNJfqyFekEoziGEF",
+  "external_url": "https://wagyr.example/legacies/demo/4",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Genesis Believer"
+    },
+    {
+      "trait_type": "Image Source",
+      "value": "Pinned IPFS PNG"
+    },
+    {
+      "trait_type": "Network",
+      "value": "Base Sepolia"
+    },
+    {
+      "trait_type": "Patron Slot",
+      "value": "0"
+    },
+    {
+      "trait_type": "Rebate Eligible",
+      "value": "false"
+    }
+  ]
+}
+
