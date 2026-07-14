@@ -24,7 +24,7 @@ import {
   requireUint,
   stringifyJson,
 } from "./lib/cli.js";
-import { getTargetNetwork, getTransport } from "./lib/network.js";
+import { assertExpectedChainId, getTargetNetwork, getTransport } from "./lib/network.js";
 
 const args = parseArgs();
 
@@ -67,6 +67,7 @@ try {
     transport: getTransport(rpcUrl),
   });
   const chainId = await publicClient.getChainId();
+  assertExpectedChainId(chainId, targetNetwork.chain.id, targetNetwork.name);
   const signerAccount = privateKeyToAccount(signerPrivateKey);
   const signer = createWalletClient({
     account: signerAccount,
@@ -114,11 +115,11 @@ function printHelp() {
     --metadata-uri <ipfs://...> \\
     --nonce <uint> \\
     --expiry <future unix seconds> \\
-    --network <base-sepolia|sepolia> \\
+    --network <base|base-sepolia|sepolia> \\
     --out <path>
 
 Environment:
-  BASE_SEPOLIA_RPC_URL or SEPOLIA_RPC_URL
+  BASE_RPC_URL, BASE_SEPOLIA_RPC_URL, or SEPOLIA_RPC_URL
   WAGYR_SIGNER_PRIVATE_KEY
   WAGYR_CONTRACT_ADDRESS   Optional fallback for --contract
   WAGYR_NETWORK            Optional default network, defaults to base-sepolia

@@ -25,7 +25,7 @@ import {
   requireUint,
   stringifyJson,
 } from "./lib/cli.js";
-import { getTargetNetwork, getTransport } from "./lib/network.js";
+import { assertExpectedChainId, getTargetNetwork, getTransport } from "./lib/network.js";
 
 const wagyrAbi = parseAbi([
   "function claim((address user,uint8 tier,uint256 playerId,uint256 backedAmount,uint256 patronSlot,string metadataURI,uint256 nonce,uint256 expiry) request, bytes signature) payable returns (uint256 tokenId)",
@@ -80,6 +80,7 @@ try {
   });
 
   const chainId = await publicClient.getChainId();
+  assertExpectedChainId(chainId, targetNetwork.chain.id, targetNetwork.name);
   const fee = await publicClient.readContract({
     address: contractAddress,
     abi: wagyrAbi,
@@ -227,10 +228,10 @@ async function readWithRetry<T>(read: () => Promise<T>): Promise<T> {
 
 function printHelp() {
   console.log(`Usage:
-  npm run claim:mint -- --contract <deployed contract address> --claim-file <path> [--network base-sepolia]
+  npm run claim:mint -- --contract <deployed contract address> --claim-file <path> [--network base]
 
 Environment:
-  BASE_SEPOLIA_RPC_URL or SEPOLIA_RPC_URL
+  BASE_RPC_URL, BASE_SEPOLIA_RPC_URL, or SEPOLIA_RPC_URL
   CLAIMER_PRIVATE_KEY
   WAGYR_CONTRACT_ADDRESS   Optional fallback for --contract
   WAGYR_NETWORK            Optional default network, defaults to base-sepolia

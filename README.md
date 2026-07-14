@@ -116,6 +116,7 @@ MintRequest(
 
 - Base Sepolia deployment state: [docs/deployed-testnet-state.md](docs/deployed-testnet-state.md)
 - Backend integration spec: [docs/backend-integration.md](docs/backend-integration.md)
+- Contract-first deployment plan: [docs/contract-first-deployment-plan.md](docs/contract-first-deployment-plan.md)
 - Secret handling and rotation: [docs/secret-handling.md](docs/secret-handling.md)
 
 ## IPFS Metadata Pinning
@@ -163,6 +164,22 @@ npm run deploy:base-sepolia -- --parameters ./ignition/parameters/base-sepolia.j
 The generated local test setup uses one funded wallet for deployer, admin,
 treasury, buyback, royalty receiver, and claimer. It uses a separate signer
 wallet for EIP-712 claim authorization.
+
+## Base Mainnet Deployment
+
+Use the Ignition module with production Base parameters:
+
+```sh
+cp ignition/parameters/base.example.json ignition/parameters/base.json
+npm run deploy:params:check:base
+npm run deploy:base -- --parameters ./ignition/parameters/base.json
+```
+
+The `deploy:base` script uses the optimized Hardhat `production` build profile.
+Set `claimFee` to `"0"` for free minting. The `signer` parameter must match
+the production `WAGYR_SIGNER_PRIVATE_KEY` address used by the backend.
+Set `WAGYR_SIGNER_ADDRESS` before running the parameter check if you want the
+script to verify that match without exposing the private key.
 
 ## Ethereum Sepolia Deployment
 
